@@ -32,6 +32,10 @@ h2 {
   letter-spacing: 2px;
   margin-bottom: 10px;
   text-shadow: 0 0 5px rgba(0, 188, 212, 0.5);
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
 }
 
 
