@@ -4,30 +4,26 @@
   <link rel="stylesheet" href="./Styles/Sytyles.css">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dare-tech</title>
+  <title>Document</title>
 </head>
 <body>
   <h1>Bienvenido a Dare-tech</h1>
   <h2>Empresa dedicada a la reparacion o restauracion de dispositivos electronicos como computadoras, celulares, tablets, etc.</h2>
   <p>Porfavor describa la falla de su dispositivo en el siguiente campo</p>
   
-  <!-- Formulario conectado al script -->
+  <!-- Agregamos el id al form y al textarea para que el script los reconozca -->
   <form id="fallaForm">
-    <textarea id="mensajeFalla" cols="30" rows="10" placeholder="Escribe aquí los detalles..."></textarea>
+    <textarea id="mensajeFalla" name="" cols="30" rows="10"></textarea>
     <button type="submit">Enviar</button>
   </form>
 
-  <!-- Script para enviar los datos a Telegram -->
+  <!-- Pega el código de JavaScript aquí dentro -->
   <script>
-    const TOKEN = "8851518275:AAGD-jhwAfjMh3FR2pyiovUu519Z7yJQoiQ"; // Reemplaza con el token de BotFather
-    const CHAT_ID = "8463419003"; // Reemplaza con tu ID de Telegram
-
     const form = document.getElementById('fallaForm');
     const textarea = document.getElementById('mensajeFalla');
 
     form.addEventListener('submit', async function(e) {
-      e.preventDefault(); // Evita que la página se recargue
-
+      e.preventDefault();
       const mensaje = textarea.value.trim();
 
       if (mensaje === "") {
@@ -35,28 +31,20 @@
         return;
       }
 
-      const textoFinal = `🚨 Nueva falla reportada en Dare-tech:\n\n${mensaje}`;
-
       try {
-        const respuesta = await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+        const respuesta = await fetch('/.netlify/functions/enviar', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            chat_id: CHAT_ID,
-            text: textoFinal
-          })
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ mensaje })
         });
 
         if (respuesta.ok) {
-          alert("¡Mensaje enviado con éxito! Nos pondremos en contacto pronto.");
-          textarea.value = ""; // Limpiar el campo
+          alert("¡Mensaje enviado con éxito!");
+          textarea.value = "";
         } else {
           alert("Hubo un error al enviar el mensaje.");
         }
       } catch (error) {
-        console.error("Error:", error);
         alert("Error de conexión.");
       }
     });
